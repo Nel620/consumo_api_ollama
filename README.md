@@ -128,7 +128,7 @@ El sistema no presenta errores (bugs), sino una limitación física por arquitec
 - RAM: Carga óptima del modelo en memoria física (Swap: 0), sin I/O Wait.
 - Cómputo: El tiempo de respuesta es la tasa de procesamiento secuencial de un CPU de 2 vCPUs sin aceleración por GPU.
 
-- **Conclusión:** El despliegue es funcional y estable. La latencia observada de ~50-60s es el comportamiento estándar de hardware para inferencia de LLMs sin GPU dedicada en CPUs de 2 vCPUs.
+**Conclusión:** El despliegue es funcional y estable. La latencia observada de ~50-60s es el comportamiento estándar de hardware para inferencia de LLMs sin GPU dedicada en CPUs de 2 vCPUs.
 
 ---
 
@@ -136,9 +136,9 @@ El sistema no presenta errores (bugs), sino una limitación física por arquitec
 
 Si el requerimiento de negocio exigiera tiempos de respuesta en milisegundos, la ruta técnica es:
 
-- 1. **Migración a Aceleración por Hardware:** Sustituir la instancia estándar por un **GPU Droplet (NVIDIA CUDA)**. Esto reduciría el tiempo de inferencia de segundos a milisegundos.
-- 2. **Implementación de Streaming:** en vez de esperar la respuesta completa, usar el modo streaming de la librería de Ollama. El script empieza a recibir palabras a medida que se generan, dando sensación de respuesta inmediata..
-- 3. **Optimización de Latencia de Red:** Despliegue en regiones cloud próximas al usuario final (ej. `nyc` a `bogotá` tiene latencia inherente; un nodo en `sa-east-1` en Brasil o servicios locales reduciría el RTT).
+1. **Migración a Aceleración por Hardware:** Sustituir la instancia estándar por un **GPU Droplet (NVIDIA CUDA)**. Esto reduciría el tiempo de inferencia de segundos a milisegundos.
+2. **Implementación de Streaming:** en vez de esperar la respuesta completa, usar el modo streaming de la librería de Ollama. El script empieza a recibir palabras a medida que se generan, dando sensación de respuesta inmediata..
+3. **Optimización de Latencia de Red:** Despliegue en regiones cloud próximas al usuario final (ej. `nyc` a `bogotá` tiene latencia inherente; un nodo en `sa-east-1` en Brasil o servicios locales reduciría el RTT).
 
 ---
 
