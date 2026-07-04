@@ -140,14 +140,15 @@ Si el requerimiento de negocio exigiera tiempos de respuesta en milisegundos, la
 2. **Implementación de Streaming:** en vez de esperar la respuesta completa, usar el modo streaming de la librería de Ollama. El script empieza a recibir palabras a medida que se generan, dando sensación de respuesta inmediata..
 3. **Optimización de Latencia de Red:** Despliegue en regiones cloud próximas al usuario final (ej. `nyc` a `bogotá` tiene latencia inherente; un nodo en `sa-east-1` en Brasil o servicios locales reduciría el RTT).
 
+---
+
 ## 🧩 Lecciones aprendidas
 
-Arquitectura desacoplada: separar el motor de inferencia (servidor) del cliente que arma los prompts permite escalar o reemplazar cualquiera de las dos partes sin tocar la otra — por ejemplo, cambiar de Droplet CPU a uno con GPU no obligaría a reescribir el código del cliente.
-Diagnóstico antes que optimización: el error 504 no se resolvió a ciegas subiendo el timeout por probar; primero se descartó red (curl local), memoria (swap en 0) y solo después se identificó el cómputo en CPU como el verdadero cuello de botella. Ese orden — red, memoria, cómputo — es el mismo que se usaría para diagnosticar cualquier sistema lento en producción.
+**Arquitectura desacoplada:** separar el motor de inferencia (servidor) del cliente que arma los prompts permite escalar o reemplazar cualquiera de las dos partes sin tocar la otra — por ejemplo, cambiar de Droplet CPU a uno con GPU no obligaría a reescribir el código del cliente.
+**Diagnóstico antes que optimización:** el error 504 no se resolvió a ciegas subiendo el timeout por probar; primero se descartó red (curl local), memoria (swap en 0) y solo después se identificó el cómputo en CPU como el verdadero cuello de botella. Ese orden — red, memoria, cómputo — es el mismo que se usaría para diagnosticar cualquier sistema lento en producción.
 **El hardware importa más que el modelo:** comparar Phi3 vs Llama3 en el mismo servidor mostró que la diferencia de latencia entre un SLM y un LLM (34s vs 58s) es real, pero ambas cifras siguen siendo altas para uso interactivo — la limitación de fondo es la ausencia de GPU, no la elección del modelo.
 **Costo cero tiene un precio:** montar el modelo propio evita pagar por token, pero cambia ese costo por latencia y por el trabajo de mantener la infraestructura (proxy, timeouts, systemd). Es un trade-off consciente, no una solución gratis en el sentido estricto.
 
--
 ---
 
 ## 📸 Evidencia del Despliegue
