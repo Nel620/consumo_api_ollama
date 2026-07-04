@@ -124,11 +124,11 @@ proyecto-ia-local/
 
 El sistema no presenta errores (bugs), sino una limitación física por arquitectura CPU-bound. Tras realizar las pruebas de conectividad y monitoreo (htop), se descartaron fallos de configuración:
 
-Red: Conectividad estable entre el cliente local y el Proxy Nginx.
-RAM: Carga óptima del modelo en memoria física (Swap: 0), sin I/O Wait.
-Cómputo: El tiempo de respuesta es la tasa de procesamiento secuencial de un CPU de 2 vCPUs sin aceleración por GPU.
+- Red: Conectividad estable entre el cliente local y el Proxy Nginx.
+- RAM: Carga óptima del modelo en memoria física (Swap: 0), sin I/O Wait.
+- Cómputo: El tiempo de respuesta es la tasa de procesamiento secuencial de un CPU de 2 vCPUs sin aceleración por GPU.
 
-**Conclusión:** El despliegue es funcional y estable. La latencia observada de ~50-60s es el comportamiento estándar de hardware para inferencia de LLMs sin GPU dedicada en CPUs de 2 vCPUs.
+- **Conclusión:** El despliegue es funcional y estable. La latencia observada de ~50-60s es el comportamiento estándar de hardware para inferencia de LLMs sin GPU dedicada en CPUs de 2 vCPUs.
 
 ---
 
@@ -136,18 +136,18 @@ Cómputo: El tiempo de respuesta es la tasa de procesamiento secuencial de un CP
 
 Si el requerimiento de negocio exigiera tiempos de respuesta en milisegundos, la ruta técnica es:
 
-1. **Migración a Aceleración por Hardware:** Sustituir la instancia estándar por un **GPU Droplet (NVIDIA CUDA)**. Esto reduciría el tiempo de inferencia de segundos a milisegundos.
-2. **Implementación de Streaming:** en vez de esperar la respuesta completa, usar el modo streaming de la librería de Ollama. El script empieza a recibir palabras a medida que se generan, dando sensación de respuesta inmediata..
-3. **Optimización de Latencia de Red:** Despliegue en regiones cloud próximas al usuario final (ej. `nyc` a `bogotá` tiene latencia inherente; un nodo en `sa-east-1` en Brasil o servicios locales reduciría el RTT).
+- 1. **Migración a Aceleración por Hardware:** Sustituir la instancia estándar por un **GPU Droplet (NVIDIA CUDA)**. Esto reduciría el tiempo de inferencia de segundos a milisegundos.
+- 2. **Implementación de Streaming:** en vez de esperar la respuesta completa, usar el modo streaming de la librería de Ollama. El script empieza a recibir palabras a medida que se generan, dando sensación de respuesta inmediata..
+- 3. **Optimización de Latencia de Red:** Despliegue en regiones cloud próximas al usuario final (ej. `nyc` a `bogotá` tiene latencia inherente; un nodo en `sa-east-1` en Brasil o servicios locales reduciría el RTT).
 
 ---
 
 ## 🧩 Lecciones aprendidas
 
-**Arquitectura desacoplada:** separar el motor de inferencia (servidor) del cliente que arma los prompts permite escalar o reemplazar cualquiera de las dos partes sin tocar la otra — por ejemplo, cambiar de Droplet CPU a uno con GPU no obligaría a reescribir el código del cliente.
-**Diagnóstico antes que optimización:** el error 504 no se resolvió a ciegas subiendo el timeout por probar; primero se descartó red (curl local), memoria (swap en 0) y solo después se identificó el cómputo en CPU como el verdadero cuello de botella. Ese orden — red, memoria, cómputo — es el mismo que se usaría para diagnosticar cualquier sistema lento en producción.
-**El hardware importa más que el modelo:** comparar Phi3 vs Llama3 en el mismo servidor mostró que la diferencia de latencia entre un SLM y un LLM (34s vs 58s) es real, pero ambas cifras siguen siendo altas para uso interactivo — la limitación de fondo es la ausencia de GPU, no la elección del modelo.
-**Costo cero tiene un precio:** montar el modelo propio evita pagar por token, pero cambia ese costo por latencia y por el trabajo de mantener la infraestructura (proxy, timeouts, systemd). Es un trade-off consciente, no una solución gratis en el sentido estricto.
+- **Arquitectura desacoplada:** separar el motor de inferencia (servidor) del cliente que arma los prompts permite escalar o reemplazar cualquiera de las dos partes sin tocar la otra — por ejemplo, cambiar de Droplet CPU a uno con GPU no obligaría a reescribir el código del cliente.
+- **Diagnóstico antes que optimización:** el error 504 no se resolvió a ciegas subiendo el timeout por probar; primero se descartó red (curl local), memoria (swap en 0) y solo después se identificó el cómputo en CPU como el verdadero cuello de botella. Ese orden — red, memoria, cómputo — es el mismo que se usaría para diagnosticar cualquier sistema lento en producción.
+- **El hardware importa más que el modelo:** comparar Phi3 vs Llama3 en el mismo servidor mostró que la diferencia de latencia entre un SLM y un LLM (34s vs 58s) es real, pero ambas cifras siguen siendo altas para uso interactivo — la limitación de fondo es la ausencia de GPU, no la elección del modelo.
+- **Costo cero tiene un precio:** montar el modelo propio evita pagar por token, pero cambia ese costo por latencia y por el trabajo de mantener la infraestructura (proxy, timeouts, systemd). Es un trade-off consciente, no una solución gratis en el sentido estricto.
 
 ---
 
