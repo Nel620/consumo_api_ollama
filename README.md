@@ -153,25 +153,25 @@ Si el requerimiento de negocio exigiera tiempos de respuesta en milisegundos, la
 
 ## 📸 Evidencia del Despliegue
 
-Servidor activo (DigitalOcean Droplet):
+**Servidor activo (DigitalOcean Droplet):**
 <img width="1016" height="494" alt="servidor" src="https://github.com/user-attachments/assets/f6641070-d4c5-4419-a136-60a78e5c0f16" />
 
-Instalación de Ollama:
+**Instalación de Ollama:**
 <img width="1069" height="469" alt="ollama y llama 3" src="https://github.com/user-attachments/assets/069563da-ac93-4fd8-b4ca-aab2f41823ec" />
 
-Servicio systemd corriendo:
+**Servicio systemd corriendo:**
 <img width="1018" height="356" alt="Servicio systemd corriendo" src="https://github.com/user-attachments/assets/ba06e987-a028-4ab7-80f2-8a6cc3ab4aea" />
 
-Configuración de Nginx: 
-<img width="1017" height="322" alt="nginx" src="https://github.com/user-attachments/assets/40810f8d-365f-471a-9744-8e33994c2bde" />.
+**Configuración de Nginx:**
+<img width="1017" height="322" alt="nginx" src="https://github.com/user-attachments/assets/40810f8d-365f-471a-9744-8e33994c2bde" />
 
-Prueba de conectividad:
+**Prueba de conectividad:**
 <img width="1018" height="458" alt="curl" src="https://github.com/user-attachments/assets/8a4e57eb-011a-45bd-9b7f-ede285f65274" />
 
-Diagnóstico de recursos: 
+**Diagnóstico de recursos:** 
 <img width="1020" height="678" alt="recursos" src="https://github.com/user-attachments/assets/6256036a-9ab4-4a5e-bbfd-52a6256f3239" />
 
-Ejecución del notebook:
+**Ejecución del notebook:**
 <img width="1282" height="617" alt="Jupyter" src="https://github.com/user-attachments/assets/c8ec55db-2c8b-4c0e-8978-c30b71aca9d9" />
 
 ---
